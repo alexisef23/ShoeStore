@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  --color-primary: #0052FF; /* Modern Vibrant Blue */
+  --color-primary-hover: #0040D2;
+  --color-secondary: #0A0A0A;
+  --color-background: #F4F7FC; /* Slight blue tint to background */
+  --color-surface: #FFFFFF;
+  --color-text: #111111;
+  --color-text-light: #5A6B80; /* Cool gray for text */
+  --color-border: #E1E8F0;
+  --color-success: #00C853;
+  --color-flash: #FF1744; /* Keep flash sales red/pink for high contrast */
+  
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 12px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 24px 48px rgba(0,0,0,0.12);
+  
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}
+
+html, body {
+  font-family: var(--font-family);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0A0A0A;
+    --color-surface: #141414;
+    --color-text: #FFFFFF;
+    --color-text-light: #A0A0A0;
+    --color-border: #222222;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
