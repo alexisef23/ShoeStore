@@ -53,6 +53,14 @@ export class ProductCard extends LitElement {
       object-fit: cover;
     }
 
+    /* Mobile-friendly larger image placeholder */
+    @media (max-width: 480px) {
+      .image-container { padding-top: 90%; }
+      .title { font-size: 1rem; }
+      .price { font-size: 1.15rem; }
+      .add-btn { width: 44px; height: 44px; }
+    }
+
     .badges {
       position: absolute;
       top: 8px;
@@ -162,6 +170,12 @@ export class ProductCard extends LitElement {
     }));
   }
 
+  private handleImgError(e: Event) {
+    const img = e.currentTarget as HTMLImageElement;
+    img.onerror = null;
+    img.src = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80';
+  }
+
   render() {
     const discount = this.originalPrice > this.productPrice 
       ? Math.round(((this.originalPrice - this.productPrice) / this.originalPrice) * 100) 
@@ -170,9 +184,7 @@ export class ProductCard extends LitElement {
     return html`
       <div class="card">
         <div class="image-container">
-          ${this.productImage
-            ? html`<img class="product-image" src="${this.productImage}" alt="${this.productTitle}" loading="lazy" />`
-            : null}
+          ${html`<img class="product-image" src="${this.productImage || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80'}" alt="${this.productTitle}" loading="lazy" @error=${this.handleImgError} />`}
           <div class="badges">
             ${this.isFlashSale ? html`<span class="badge flash">🔥 Flash</span>` : null}
             ${discount > 0 ? html`<span class="badge">-${discount}%</span>` : null}

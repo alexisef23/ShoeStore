@@ -22,49 +22,54 @@ export class AppHeader extends LitElement {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: var(--app-color-primary);
-      color: white;
-      padding: 12px;
-      padding-top: 4px;
-
+      background: var(--header-bg, var(--color-surface));
+      color: var(--header-text-color, var(--color-text));
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--color-border);
       position: fixed;
-      left: env(titlebar-area-x, 0);
-      top: env(titlebar-area-y, 0);
-      height: env(titlebar-area-height, 30px);
-      width: env(titlebar-area-width, 100%);
-      -webkit-app-region: drag;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      z-index: 40;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
 
     header h1 {
-      margin-top: 0;
-      margin-bottom: 0;
-      font-size: 12px;
-      font-weight: bold;
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      text-align: left;
     }
 
     nav a {
-      margin-left: 10px;
+      margin-left: 8px;
     }
 
     #back-button-block {
       display: flex;
-      justify-content: space-between;
       align-items: center;
       gap: 8px;
     }
 
     sl-button.cart-link {
-      margin-left: 10px;
+      margin-left: 6px;
     }
 
     @media(prefers-color-scheme: light) {
       header {
-        color: black;
+        background: var(--color-surface);
+        color: var(--color-text);
       }
 
       nav a {
         color: initial;
       }
+    }
+
+    @media (min-width: 480px) {
+      header { height: 64px; }
     }
   `;
 

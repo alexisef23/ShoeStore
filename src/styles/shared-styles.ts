@@ -2,12 +2,13 @@ import { css } from 'lit';
 
 export const styles = css`
   main {
-    margin-top: 54px; /* Space for fixed header */
-    padding: 16px;
-    max-width: 1200px;
+    margin-top: 64px; /* Space for fixed mobile header */
+    padding: 12px 12px 24px;
+    max-width: 480px; /* Mobile-first width */
     margin-left: auto;
     margin-right: auto;
-    animation: fadeIn 0.4s ease-out;
+    animation: fadeIn 0.25s ease-out;
+    width: 100%;
   }
 
   @keyframes fadeIn {

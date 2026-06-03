@@ -14,10 +14,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const { orderId, paymentMethodId, customerEmail } = req.body;
+  const { orderId, paymentTokenId, customerEmail } = req.body;
 
-  if (!orderId) {
-    return res.status(400).json({ error: 'orderId is required' });
+  if (!orderId || !paymentTokenId) {
+    return res.status(400).json({ error: 'orderId and paymentTokenId are required' });
   }
 
   try {
@@ -39,13 +39,11 @@ export default async function handler(req, res) {
     // 2. Process Payment via Mercado Pago SDK
     const payment = new Payment(mpClient);
     
-    // Simulate or process real payment
-    // In production, we pass the real tokenized card. Here we use a dummy or the provided one.
     const paymentResult = await payment.create({
       body: {
         transaction_amount: Number(order.total_amount),
-        description: `Compra Tienda PWA - Orden ${order.id.split('-')[0]}`,
-        payment_method_id: paymentMethodId || 'visa',
+        description: \`Compra Tienda PWA - Orden \${order.id.split('-')[0]}\`,
+        token: paymentTokenId,
         installments: 1,
         payer: {
           email: customerEmail || 'test_user_buyer@test.com'
@@ -81,7 +79,7 @@ export default async function handler(req, res) {
         .update({ status: 'failed' })
         .eq('id', orderId);
 
-      return res.status(400).json({ success: false, message: `Payment failed with status: ${paymentResult.status}` });
+      return res.status(400).json({ success: false, message: \`Payment failed with status: \${paymentResult.status}\` });
     }
 
   } catch (error) {
@@ -93,3 +91,4 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: error.message });
   }
 }
+

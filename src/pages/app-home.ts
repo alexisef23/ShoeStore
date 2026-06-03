@@ -39,7 +39,7 @@ export class AppHome extends LitElement {
 
       .hero-banner {
         width: 100%;
-        min-height: 400px;
+        min-height: 420px;
         background: linear-gradient(135deg, var(--color-primary) 0%, #00B4DB 100%);
         color: white;
         display: flex;
@@ -47,8 +47,8 @@ export class AppHome extends LitElement {
         justify-content: center;
         align-items: center;
         text-align: center;
-        padding: 40px 20px;
-        border-radius: 0 0 32px 32px;
+        padding: 56px 20px 36px; /* extra top padding to account for transparent header */
+        border-radius: 0 0 28px 28px;
         margin-bottom: 24px;
         position: relative;
         overflow: hidden;
@@ -192,22 +192,25 @@ export class AppHome extends LitElement {
 
   async connectedCallback() {
     super.connectedCallback();
-    const user = await getCurrentUser();
-    if (!user) {
-      window.location.href = resolveRouterPath('login');
-      return;
-    }
     await this.loadProductsFromDB();
   }
 
   private async loadProductsFromDB() {
     this.loadingProducts = true;
+    console.debug('[app-home] start loading products');
     try {
       const dbProducts = await fetchProducts();
-      
+      console.debug('[app-home] fetched products', dbProducts && dbProducts.length);
+
+      if (!Array.isArray(dbProducts)) {
+        console.warn('[app-home] fetchProducts did not return an array', dbProducts);
+        this.products = [];
+        return;
+      }
+
       this.products = dbProducts.map((p, index) => {
         const isFlash = index < 3; // First 3 products get a simulated flash sale to keep UI rich
-        
+
         return {
           id: p.id,
           title: p.name,
@@ -216,13 +219,14 @@ export class AppHome extends LitElement {
           originalPrice: isFlash ? p.price * 1.3 : undefined, // 30% discount simulation
           image: p.image_url || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80',
           inStock: p.in_stock !== false, // Default to true if not explicitly false
-          isFlashSale: isFlash
+          isFlashSale: isFlash,
         };
       });
     } catch (e) {
-      console.warn("Failed to load products", e);
+      console.warn('Failed to load products', e);
     } finally {
       this.loadingProducts = false;
+      console.debug('[app-home] finished loading products, count=', this.products.length);
     }
   }
 
@@ -242,7 +246,7 @@ export class AppHome extends LitElement {
     const recommended = this.products.filter(p => !p.isFlashSale);
 
     return html`
-      <app-header></app-header>
+      <app-header style="--header-bg: transparent; --header-text-color: white;"></app-header>
 
       <main @add-to-cart=${this.handleCartAdd}>
         <div class="hero-banner">
